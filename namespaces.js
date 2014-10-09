@@ -55,45 +55,6 @@
                 return parent.getInstance();
             }
         }
-        parent.extends = function (path) {
-            var o = parent.getInstance();
-            parent.getInstance = function () {
-                var Base = $.using(path).getInstance(),
-                    mergeObject = $.extend(true, $.extend({}, Base), o);
-
-                mergeObject.Base = Base;
-
-                return mergeObject;
-            };
-            return parent;
-        };
         return parent;
-    };
-    /**
-    * This function get a object via a namespace in string
-    * See Function $.namespace
-    * Example:
-    *  var config = $.using("com.business.core.config").getInstance();
-    *  config.getName(); //this returns Configurations
-    **/
-    $.using = function (path) {
-        var parts = path.split("."),
-            root = parts.shift(),
-            namespace = null;
-
-        namespace = window[root];
-
-        if (!namespace) { throw "namespace no found"; }
-
-        while (parts.length > 0) {
-            var current = parts.shift();
-
-            current = namespace[current];
-
-            if (!current) { throw "namespace no found"; }
-
-            namespace = current;
-        }
-        return namespace; //Return the last node
     };
 } (jQuery));
