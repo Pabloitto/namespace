@@ -15,7 +15,7 @@
     *       }
     * });
     **/
-    $.namespace = function (path, obj) {
+   $.namespace = function (path, obj) {
         var parts = path.split("."),
             root = parts.shift(),
             parent = null;
@@ -33,19 +33,15 @@
             parent = parent[parts[i]];
         }
         if (obj) {
-            if ($.isFunction(obj)) {
-                parent.getInstance = function () {
-                    var r = new obj();
-                    parent.getInstance = function () {
-                        return r;
-                    };
-                    return parent.getInstance();
-                };
-            } else if ($.isPlainObject(obj)) {
-                parent.getInstance = function () {
-                    return obj;
-                };
-            }
+			if (typeof(obj) === "function") {
+				parent.getInstance = function () {
+					return new obj();
+				};
+			}else if(typeof(obj) === "object"){
+				parent.getInstance = function () {
+					return obj;
+				};
+			}
         } else {
             parent.getInstance = function () {
                 var newInstance = {};
